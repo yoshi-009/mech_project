@@ -37,7 +37,7 @@ void loop() {
         //     String s1, s2;
         // }
         //lineTrace(threshold);
-        nagiTrace();
+        ballsensor();
     }
 }
 
