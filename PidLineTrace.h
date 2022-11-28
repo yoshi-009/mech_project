@@ -21,7 +21,7 @@ class PidLineTrace {
     float kp = 10.0;
     float ki = 1.0;
     float kd = 0.1;
-    float dt = 0.01;
+    float dt = 0.005;
 
     PidLineTrace(Motor& motorL, Motor& motorR)
         : _motorL(motorL),

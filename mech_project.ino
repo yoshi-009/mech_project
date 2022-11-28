@@ -55,6 +55,11 @@ void loop() {
                     turn(-1);  // left
                     break;
                 default:
+                    motorL.move(200);
+                    motorR.move(200);
+                    delay(500);
+                    motorL.move(0);
+                    motorR.move(0);
                     break;
             }
         }
@@ -122,6 +127,8 @@ void turn(int dir) {
         motorL.move(200 * dir);
         SEN_F = analogRead(sensor_Front);
     } while (!isBlack(SEN_F));
+    motorL.move(0);
+    motorR.move(0);
 }
 
 bool isBlack(int val) { return val > threshold; }
