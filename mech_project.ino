@@ -8,6 +8,9 @@ Motor motorR(motorR_A, motorR_B, motorR_EN);
 
 PidLineTrace pid(motorL, motorR);
 
+bool isBlack(int);
+void turn(int);
+
 bool debug = false;
 int threshold = 100;
 int count = 0;
@@ -19,6 +22,14 @@ void setup() {
 }
 
 void loop() {
+    static int times = 0;
+
+    int SEN_L, SEN_C, SEN_R, SEN_F;
+    SEN_L = analogRead(sensor_L);      //左のセンサ値を読み取り
+    SEN_C = analogRead(sensor_C);      //中央のセンサ値を読み取り
+    SEN_R = analogRead(sensor_R);      //右のセンサ値を読み取り
+    SEN_F = analogRead(sensor_Front);  //前のセンサ値を読み取り
+
     if (debug) {
         if (Serial.available()) {
             String s1, s2;
@@ -33,11 +44,24 @@ void loop() {
             motorR.move(speed2);
         }
     } else {
-        // if(Serial.available()){
-        //     String s1, s2;
-        // }
-        //lineTrace(threshold);
-        ballsensor();
+        if (isBlack(SEN_C) && isBlack(SEN_R) && isBlack(SEN_F)) {
+            times++;
+            Serial.println(times);
+            switch (times) {
+                case 3:
+                    turn(1);  // right
+                    break;
+                case 5:
+                    turn(-1);  // left
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (times == 5) ballsensor();
+        pid.run();
+        // lineTrace(threshold);
+        delay(5);
     }
 }
 
@@ -90,3 +114,14 @@ void lineTrace(int threshold) {
         }
     }
 }
+
+void turn(int dir) {
+    int SEN_F;
+    do {
+        motorR.move(-200 * dir);
+        motorL.move(200 * dir);
+        SEN_F = analogRead(sensor_Front);
+    } while (!isBlack(SEN_F));
+}
+
+bool isBlack(int val) { return val > threshold; }

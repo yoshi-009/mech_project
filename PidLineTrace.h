@@ -16,7 +16,7 @@ class PidLineTrace {
     }
 
     public:
-    int goal = 0;
+    int goal = 800;
     int forwardSpeed = 50;
     float kp = 10.0;
     float ki = 1.0;
@@ -31,8 +31,7 @@ class PidLineTrace {
     void run() {
         readVal();
         int err;
-        err = abs(goal - _C);
-        if (_L < _R) err = -err;
+        err = goal - _C;
         _acc += float(err) * dt;
         int dif = err - _pErr;
         int speed = kp * err + ki * _acc + kd * dif;

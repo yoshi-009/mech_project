@@ -21,4 +21,3 @@ const int motorSL_EN = 3;
 const int motorSR_A = 6;
 const int motorSR_B = 4;  //使わないピン
 const int motorSR_EN = 5;
-
