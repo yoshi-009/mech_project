@@ -17,10 +17,10 @@ class PidLineTrace {
     }
 
     public:
-    int goal = 700;
-    float kp = 0;
-    float ki = 0.00;
-    float kd = 0.0;
+    int goal = 670;
+    float kp = 1.0;
+    float ki = 0.2;
+    float kd = 0.5;
     float dt = 0.001;
 
     PidLineTrace(Motor& motorL, Motor& motorR)
@@ -28,28 +28,33 @@ class PidLineTrace {
           _motorR(motorR){
 
           };
-    void run(int forwardSpeed) {
+    void run(int forward_speed) {
         readVal();
         int err;
-        err = -_L + _R;
+        err = abs(goal - _C);
+        if (_L < _R) err = -err;
         _acc += float(err) * dt;
         int dif = err - _pErr;
         int speed = kp * err + ki * _acc + kd * dif;
+        int _F = analogRead(sensor_Front);
         // Serial.print(_L);
         // Serial.print(" ");
         // Serial.print(_R);
         // Serial.print(" ");
+        // Serial.print(_F);
+        // Serial.print(" ");
         // Serial.print(_C);
         // Serial.print(" ");
-        // Serial.println(err);
+        // Serial.println(680);
+        // Serial.print(err);
         // Serial.print(" ");
         // Serial.println(speed);
-        if (forwardSpeed < 0) {
-            _motorL.move(forwardSpeed + speed);
-            _motorR.move(forwardSpeed * 1.4 - speed);
+        if (forward_speed < 0) {
+            _motorL.move(forward_speed + speed);
+            _motorR.move(forward_speed - speed);
         } else {
-            _motorL.move(forwardSpeed * 1.3 - speed);
-            _motorR.move(forwardSpeed + speed);
+            _motorL.move(forward_speed - speed);
+            _motorR.move(forward_speed + speed);
         }
     }
 };
