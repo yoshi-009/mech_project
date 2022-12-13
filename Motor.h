@@ -22,7 +22,7 @@ class Motor {
         if (speed > 255) {
             speed = 255;
         } else if (speed < -255) {
-            speed = -255;
+            speed   = -255;
         }
 
         if (speed >= 0) {
@@ -36,4 +36,3 @@ class Motor {
         }
     }
 };
-

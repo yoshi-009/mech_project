@@ -6,28 +6,23 @@
 Motor motorSL(motorSL_A, motorSL_B, motorSL_EN);  //
 Motor motorSR(motorSR_A, motorSR_B, motorSR_EN);  //
 
+int ballthreshold = 900;
 
-int ballthreshold = 1000;
+void ballsensor() {
+    int sen_Ball;
+    sen_Ball = analogRead(sensor_Ball);  //前のセンサ値を読み取り
 
-void ballsensor(){
-  int sen_Front;
-  sen_Front = analogRead(sensor_Front);  //前のセンサ値を読み取り
-
-  Serial.println(sen_Front);
-  
-  //取り込み
-  if (sen_Front > ballthreshold)
-  {
-    motorSL.move(-50);
-    motorSR.move(50);
-    delay(100);
-  }
-  //射出
-  else if (sen_Front < ballthreshold)
-  {
-    motorSL.move(250);
-    motorSR.move(-250);
-    delay(100);
-  }
-
+    //取り込み
+    if (sen_Ball > ballthreshold) {
+        motorSL.move(255);
+        motorSR.move(-255);
+        // delay(100);
+    }
+    //射出
+    else if (sen_Ball < ballthreshold) {
+        // delay(500);
+        motorSL.move(0);
+        motorSR.move(0);
+        // delay(500);
+    }
 }
