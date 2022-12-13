@@ -18,9 +18,9 @@ class PidLineTrace {
 
     public:
     int goal = 670;
-    float kp = 1.0;
+    float kp = 0.8;
     float ki = 0.2;
-    float kd = 0.5;
+    float kd = 0.6;
     float dt = 0.001;
 
     PidLineTrace(Motor& motorL, Motor& motorR)
@@ -31,12 +31,11 @@ class PidLineTrace {
     void run(int forward_speed) {
         readVal();
         int err;
-        err = abs(goal - _C);
-        if (_L < _R) err = -err;
+        err = _L - _R;
         _acc += float(err) * dt;
         int dif = err - _pErr;
         int speed = kp * err + ki * _acc + kd * dif;
-        int _F = analogRead(sensor_Front);
+        // int _F = analogRead(sensor_Front);
         // Serial.print(_L);
         // Serial.print(" ");
         // Serial.print(_R);
