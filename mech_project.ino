@@ -63,10 +63,10 @@ void loop() {
                 Serial.println(speed[i]);
             }
             Serial.println();
-            motorL.move(speed1);
-            motorR.move(speed2);
-            motorSL.move(speed3);
-            motorSR.move(speed4);
+            motorL.move(speed[0]);
+            motorR.move(speed[1]);
+            motorSL.move(speed[2]);
+            motorSR.move(speed[3]);
         }
         delay(1);
         return;
