@@ -69,14 +69,30 @@ void loop() {
             motorSR.move(speed4);
         }
         delay(1);
+        return;
+    }
 
+    int speed = base_speed;
+    int sen_Ball = analogRead(sensor_Ball);
+
+    //ボールを回収して，後退する場合の処理
+    if (sen_Ball < threshold_back) {
+        //モータ出力の元の補正値を記録しておく
+        double pp_L = motorL.p;
+        double pp_R = motorR.p;
+
+        //後退時の偏りに合わせてモータ出力を調整する
+        motorL.p = 1.0;
+        motorR.p = 0.9;
+
+        //全速力で後退
+        motorL.move(-255);
+        motorR.move(-255);
+
+        //補正値を元に戻す
+        motorL.p = pp_L;
+        motorR.p = pp_R;
     } else {
-        int speed = base_speed;
-        int sen_Ball = analogRead(sensor_Ball);
-
-        //ボールを回収したあとは後退する（交差点の処理の際に必要）
-        if (sen_Ball < threshold_back) speed = -speed;
-
         //ライントレースする
         pid.run(speed);
 
@@ -103,31 +119,12 @@ void loop() {
             motorL.move(speed);
             motorR.move(speed);
         }
-
-        //ボールを回収して，後退する場合の処理
-        if (sen_Ball < threshold_back) {
-            //モータ出力の元の補正値を記録しておく
-            double pp_L = motorL.p;
-            double pp_R = motorR.p;
-
-            //後退時の偏りに合わせてモータ出力を調整する
-            motorL.p = 1.0;
-            motorR.p = 0.9;
-
-            //全速力で後退
-            motorL.move(-255);
-            motorR.move(-255);
-
-            //補正値を元に戻す
-            motorL.p = pp_L;
-            motorR.p = pp_R;
-        }
-
-        //ボールの有無に応じて回収機構を動かす
-        ballsensor();
-
-        delay(1);
     }
+
+    //ボールの有無に応じて回収機構を動かす
+    ballsensor();
+
+    delay(1);
 }
 
 bool isBlack(int val) { return val < threshold_black; }
