@@ -9,8 +9,8 @@ const int motorR_B = 12;
 const int motorR_EN = 11;
 
 const int sensor_R = A1;
-const int sensor_C = A2;
-const int sensor_L = A0;
+const int sensor_C = A0;
+const int sensor_L = A2;
 
 const int sensor_Front = A3;
 const int sensor_Back = A4;

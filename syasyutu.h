@@ -14,8 +14,8 @@ void ballsensor() {
 
     //取り込み
     if (sen_Ball > ballthreshold) {
-        motorSL.move(255);
-        motorSR.move(-255);
+        motorSL.move(70);
+        motorSR.move(-70);
         // delay(100);
     }
     //射出
